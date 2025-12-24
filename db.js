@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 import dotenv from 'dotenv'
 
-mongoose.connect(process.env.MONGO_URI, {
+const mongoURI = process.env.MONGO_URI
+
+mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
