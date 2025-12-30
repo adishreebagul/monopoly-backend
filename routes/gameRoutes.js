@@ -1,6 +1,7 @@
 import express from 'express'
 import Game from '../models/Game.js'
 import Property from '../models/Property.js'
+import Player from '../models/Player.js'
 
 const router = express.Router()
 
