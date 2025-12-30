@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import mongoose from './db.js'
 import cors from 'cors'
 import playerRoutes from './routes/playerRoutes.js'
+import gameRoutes from './routes/gameRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/players', playerRoutes)
+app.use('/api/games', gameRoutes)
 
 const server = http.createServer(app)
 
