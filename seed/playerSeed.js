@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
 import Player from "../models/Player.js";
+import mongoose from '../db.js';
 
 const seedPlayers = async () => {
     await Player.deleteMany()
