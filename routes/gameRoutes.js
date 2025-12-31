@@ -82,9 +82,15 @@ router.post('/:gameId/rollDice', async (req, res) => {
         res.json({ roll, playerPosition: player.position, turnIndex: game.turnIndex })
     }
     catch (err) {
+        console.error('ROLL DICE ERROR ↓↓↓')
         console.error(err)
-        res.status(500).json({ message: 'Failed to roll dice' })
+        res.status(500).json({
+            message: 'Failed to roll dice',
+            error: err.message,
+            stack: err.stack
+        })
     }
+
 })
 
 router.post('/:gameId/buyProperty', async (req, res) => {
