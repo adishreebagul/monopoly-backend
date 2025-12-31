@@ -54,10 +54,10 @@ router.post('/:gameId/rollDice', async (req, res) => {
         if (!game) return res.status(404).json({ message: 'Game not found' })
 
         const currentPlayer = game.players[game.turnIndex]
-const currentPlayerId = currentPlayer._id ? currentPlayer._id : currentPlayer
-if (!currentPlayerId.equals(playerId)) {
-    return res.status(403).json({ message: "Not your turn" })
-}
+        const currentPlayerId = currentPlayer._id ? currentPlayer._id : currentPlayer
+        if (!currentPlayerId.equals(playerId)) {
+            return res.status(403).json({ message: "Not your turn" })
+        }
 
 
         const dice1 = Math.ceil(Math.random() * 6)
@@ -67,7 +67,6 @@ if (!currentPlayerId.equals(playerId)) {
         const player = game.players.find(p => p._id.toString() === playerId.toString())
         player.position = (player.position + roll) % game.board.length
 
-        game.turnIndex = (game.turnIndex + 1) % game.players.length
         await game.save()
 
         res.json({ roll, playerPosition: player.position, turnIndex: game.turnIndex })
@@ -83,11 +82,11 @@ router.post('/:gameId/buyProperty', async (req, res) => {
         const game = await Game.findById(gameId).populate('players board')
         if (!game) return res.status(404).json({ message: 'Game not found' })
 
-       const currentPlayer = game.players[game.turnIndex]
-const currentPlayerId = currentPlayer._id ? currentPlayer._id : currentPlayer
-if (!currentPlayerId.equals(playerId)) {
-    return res.status(403).json({ message: "Not your turn" })
-}
+        const currentPlayer = game.players[game.turnIndex]
+        const currentPlayerId = currentPlayer._id ? currentPlayer._id : currentPlayer
+        if (!currentPlayerId.equals(playerId)) {
+            return res.status(403).json({ message: "Not your turn" })
+        }
 
 
         const player = game.players.find(p => p._id.toString() === playerId.toString())
@@ -100,6 +99,7 @@ if (!currentPlayerId.equals(playerId)) {
         player.money -= property.price
         player.properties.push(property._id)
 
+        game.turnIndex = (game.turnIndex + 1) % game.players.length
         await game.save()
         res.json({ message: 'Property purchased', player, property })
     } catch (err) {
