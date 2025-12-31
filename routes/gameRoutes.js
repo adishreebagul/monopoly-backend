@@ -62,7 +62,7 @@ router.post('/:gameId/rollDice', async (req, res) => {
     const { gameId } = req.params
 
     try {
-        const game = await Game.findById(gameId).populate('players')
+        const game = await Game.findById(gameId).populate('players board')
         if (!game) return res.status(404).json({ message: 'Game not found' })
 
         if (game.getCurrentPlayerId() !== playerId) {
@@ -120,7 +120,7 @@ router.post('/:gameId/buyProperty', async (req, res) => {
     }
     catch (err) {
         console.error(err)
-        res.status(400).json({ message: 'Failed to buy property' })
+        res.status(500).json({ message: 'Failed to buy property' })
     }
 }
 )
