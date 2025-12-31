@@ -5,7 +5,8 @@ const playerSchema = new mongoose.Schema({
     money: { type: Number, default: 1500 },
     position: { type: Number, default: 0 },
     properties: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Property' }],
-    inJail: { type: Boolean, default: false }
+    inJail: { type: Boolean, default: false },
+    game: { type: mongoose.Schema.Types.ObjectId, ref: 'Game', default: null }
 })
 
 const Player = mongoose.model('Player', playerSchema)

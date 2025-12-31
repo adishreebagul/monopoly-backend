@@ -5,14 +5,12 @@ const properties = [
     {
         name: 'Boardwalk',
         price: 400,
-        rent: 50,
-        images: 'boardwalk.png'
+        rent: 50
     },
     {
         name: 'Park Place',
         price: 350,
-        rent: 35,
-        image: 'park-place.png'
+        rent: 35
     }
 ]
 const seedProperties = async () => {
