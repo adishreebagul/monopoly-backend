@@ -54,10 +54,11 @@ router.post('/:gameId/rollDice', async (req, res) => {
         if (!game) return res.status(404).json({ message: 'Game not found' })
 
         const currentPlayer = game.players[game.turnIndex]
-        const currentPlayerId = currentPlayer._id ? currentPlayer._id : currentPlayer
-        if (!mongoose.Types.ObjectId(currentPlayerId).equals(playerId)) {
-            return res.status(403).json({ message: "Not your turn" })
-        }
+const currentPlayerId = currentPlayer._id ? currentPlayer._id : currentPlayer
+if (!currentPlayerId.equals(playerId)) {
+    return res.status(403).json({ message: "Not your turn" })
+}
+
 
         const dice1 = Math.ceil(Math.random() * 6)
         const dice2 = Math.ceil(Math.random() * 6)
@@ -82,11 +83,12 @@ router.post('/:gameId/buyProperty', async (req, res) => {
         const game = await Game.findById(gameId).populate('players board')
         if (!game) return res.status(404).json({ message: 'Game not found' })
 
-        const currentPlayer = game.players[game.turnIndex]
-        const currentPlayerId = currentPlayer._id ? currentPlayer._id : currentPlayer
-        if (!mongoose.Types.ObjectId(currentPlayerId).equals(playerId)) {
-            return res.status(403).json({ message: "Not your turn" })
-        }
+       const currentPlayer = game.players[game.turnIndex]
+const currentPlayerId = currentPlayer._id ? currentPlayer._id : currentPlayer
+if (!currentPlayerId.equals(playerId)) {
+    return res.status(403).json({ message: "Not your turn" })
+}
+
 
         const player = game.players.find(p => p._id.toString() === playerId.toString())
         const property = game.board[player.position]
