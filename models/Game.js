@@ -26,9 +26,4 @@ gameSchema.methods.getCurrentPlayerId = function () {
 
 const Game = mongoose.model('Game', gameSchema)
 
-gameSchema.methods.getCurrentPlayerId = function() {
-    if (!this.players || this.players.length === 0) return null
-    return this.players[this.turnIndex % this.players.length].toString()
-}
-
 export default Game
