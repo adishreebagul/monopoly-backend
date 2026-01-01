@@ -16,9 +16,9 @@ app.use(cors({
     methods: ['GET', 'POST']
 }))
 
-app.get('/', (req, res) => {
-    res.send('Monopoly backend running')
-})
+//app.get('/', (req, res) => {
+   // res.send('Monopoly backend running')
+//})
 
 app.use('/api/players', playerRoutes)
 app.use('/api/games', gameRoutes)
@@ -33,12 +33,12 @@ const io = new Server(server, {
 })
 
 io.on('connection', (socket) => {
-    console.log('A player connected', socket.id)
+    //console.log('A player connected', socket.id)
 
     // join a specific game room
     socket.on('joinGame', (gameId) => {
         socket.join(gameId)
-        console.log(`Socket ${socket.id} joined game ${gameId}`)
+        //console.log(`Socket ${socket.id} joined game ${gameId}`)
     })
 
     // player move within a game
@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('disconnect', () => {
-        console.log('A player disconnected', socket.id)
+        //console.log('A player disconnected', socket.id)
     })
 })
 
