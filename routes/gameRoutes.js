@@ -19,13 +19,18 @@ router.post('/joinRandom', async (req, res) => {
         })
 
         if (!game) {
-            const properties = await Property.find()
+            const properties = await Property.find().sort({ _id: 1 })
+
             game = await Game.create({
                 players: [],
-                board: properties,
+                board: properties.map(p => ({
+                    property: p._id,
+                    owner: null
+                })),
                 turnIndex: 0,
-                status: 'waiting',
+                status: 'waiting'
             })
+
         }
 
         if (game.players.length >= MAX_PLAYERS) return res.status(400).json({ message: 'Game is already full' })

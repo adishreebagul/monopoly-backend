@@ -35,8 +35,16 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
     console.log('A player connected', socket.id)
 
+    // join a specific game room
+    socket.on('joinGame', (gameId) => {
+        socket.join(gameId)
+        console.log(`Socket ${socket.id} joined game ${gameId}`)
+    })
+
+    // player move within a game
     socket.on('playerMove', (data) => {
-        io.emit('updateGame', data)
+        // data should include { gameId, ...other info }
+        io.to(data.gameId).emit('updateGame', data) // only clients in this game get updates
     })
 
     socket.on('disconnect', () => {
