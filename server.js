@@ -4,8 +4,8 @@ import { Server } from 'socket.io'
 import dotenv from 'dotenv'
 import mongoose from './db.js'
 import cors from 'cors'
-import playerRoutes from './routes/playerRoutes.js'
 import gameRoutes from './routes/gameRoutes.js'
+import loginRoutes from './routes/loginRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -16,12 +16,8 @@ app.use(cors({
     methods: ['GET', 'POST']
 }))
 
-//app.get('/', (req, res) => {
-   // res.send('Monopoly backend running')
-//})
-
-app.use('/api/players', playerRoutes)
 app.use('/api/games', gameRoutes)
+app.use('/api/auth')
 
 const server = http.createServer(app)
 
