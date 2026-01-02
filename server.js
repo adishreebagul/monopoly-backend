@@ -16,9 +16,11 @@ app.use(cors({
     methods: ['GET', 'POST']
 }))
 
-app.use('/api/games', gameRoutes)
-app.use('/api/auth')
+// Routes
+app.use('/api/auth', loginRoutes)  
+app.use('/api/games', gameRoutes)   
 
+// HTTP server
 const server = http.createServer(app)
 
 const io = new Server(server, {
@@ -29,22 +31,19 @@ const io = new Server(server, {
 })
 
 io.on('connection', (socket) => {
-    //console.log('A player connected', socket.id)
 
-    // join a specific game room
+    // Join a specific game room
     socket.on('joinGame', (gameId) => {
         socket.join(gameId)
-        //console.log(`Socket ${socket.id} joined game ${gameId}`)
     })
 
-    // player move within a game
+    // Broadcast a player's move to all clients in the same game
     socket.on('playerMove', (data) => {
-        // data should include { gameId, ...other info }
-        io.to(data.gameId).emit('updateGame', data) // only clients in this game get updates
+        io.to(data.gameId).emit('updateGame', data)
     })
 
     socket.on('disconnect', () => {
-        //console.log('A player disconnected', socket.id)
+        // Player disconnected
     })
 })
 
