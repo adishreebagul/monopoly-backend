@@ -8,28 +8,30 @@ const router = express.Router()
 const MAX_PLAYERS = 4
 
 router.post('/joinRandom', async (req, res) => {
-    const { userId } = req.body
+    const { userId } = req.body;
+    const io = req.app.get('io'); // get io instance
+
     try {
-        const user = await User.findById(userId)
-        if (!user) return res.status(404).json({ message: 'User not found' })
+        const user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: 'User not found' });
 
         let game = await Game.findOne({
             status: 'waiting',
             $expr: { $lt: [{ $size: "$players" }, MAX_PLAYERS] }
-        })
+        });
 
         if (!game) {
-            const properties = await Property.find().sort({ _id: 1 })
+            const properties = await Property.find().sort({ _id: 1 });
             game = await Game.create({
                 players: [],
                 board: properties.map(p => ({ property: p._id, owner: null })),
                 turnIndex: 0,
                 status: 'waiting'
-            })
+            });
         }
 
-        const existingPlayer = await Player.findOne({ user: user._id, game: game._id })
-        if (existingPlayer) return res.status(400).json({ message: 'User already joined this game' })
+        const existingPlayer = await Player.findOne({ user: user._id, game: game._id });
+        if (existingPlayer) return res.status(400).json({ message: 'User already joined this game' });
 
         const player = await Player.create({
             user: user._id,
@@ -38,21 +40,26 @@ router.post('/joinRandom', async (req, res) => {
             position: 0,
             properties: [],
             inJail: false
-        })
+        });
 
-        game.players.push(player._id)
-        if (game.players.length >= MAX_PLAYERS) game.status = 'started'
-        await game.save()
+        game.players.push(player._id);
+        if (game.players.length >= MAX_PLAYERS) game.status = 'started';
+        await game.save();
 
         const populatedGame = await Game.findById(game._id).populate({
             path: 'players',
             populate: { path: 'user', select: 'name' }
-        })
-        res.json(populatedGame)
+        });
+
+        // Emit to all players in this game room
+        io.to(game._id.toString()).emit('playerJoined', populatedGame);
+
+        res.json(populatedGame);
+
     } catch (err) {
-        res.status(500).json({ message: 'Failed to join game', error: err.message })
+        res.status(500).json({ message: 'Failed to join game', error: err.message });
     }
-})
+});
 
 router.post('/:gameId/rollDice', async (req, res) => {
     const { playerId } = req.body
@@ -113,12 +120,12 @@ router.get('/:gameId', async (req, res) => {
         const game = await Game.findById(req.params.gameId).populate({
             path: 'players',
             populate: { path: 'user', select: 'name' }
-        })
-        if (!game) return res.status(404).json({ message: 'Game not found' })
-        res.json(game)
+        });
+        if (!game) return res.status(404).json({ message: 'Game not found' });
+        res.json(game);
     } catch (err) {
-        res.status(500).json({ message: 'Failed to fetch game', error: err.message })
+        res.status(500).json({ message: 'Failed to fetch game', error: err.message });
     }
-})
+});
 
 export default router
