@@ -9,7 +9,7 @@ const MAX_PLAYERS = 4
 
 router.post('/joinRandom', async (req, res) => {
     const { userId } = req.body;
-    const io = req.app.get('io'); // get io instance
+    const io = req.app.get('io');
 
     try {
         const user = await User.findById(userId);
@@ -24,7 +24,7 @@ router.post('/joinRandom', async (req, res) => {
             const properties = await Property.find().sort({ _id: 1 });
             game = await Game.create({
                 players: [],
-                board: properties.map(p => ({ property: p._id, owner: null })),
+                board: boardTiles.map(p => ({ property: tile.property, owner: null })),
                 turnIndex: 0,
                 status: 'waiting'
             });
