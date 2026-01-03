@@ -2,21 +2,15 @@ import mongoose from '../db.js'
 import Property from '../models/Property.js'
 
 const properties = [
-  { name: 'GO', price: 0, rent: 0 },
-
   { name: 'Crimson Alley', price: 60, rent: 2 },
-  { name: 'Mystic Chest', price: 0, rent: 0 },
   { name: 'Azure Street', price: 60, rent: 4 },
-  { name: 'Income Tax', price: 0, rent: 0 },
 
   { name: 'Iron Station', price: 200, rent: 25 },
 
   { name: 'Emerald Road', price: 100, rent: 6 },
-  { name: 'Fate Card', price: 0, rent: 0 },
+
   { name: 'Emerald Lane', price: 100, rent: 6 },
   { name: 'Emerald Court', price: 120, rent: 8 },
-
-  { name: 'Jail', price: 0, rent: 0 },
 
   { name: 'Sapphire Way', price: 140, rent: 10 },
   { name: 'Energy Grid', price: 150, rent: 15 },
@@ -26,14 +20,12 @@ const properties = [
   { name: 'Sky Station', price: 200, rent: 25 },
 
   { name: 'Amber Street', price: 180, rent: 14 },
-  { name: 'Mystic Chest', price: 0, rent: 0 },
   { name: 'Amber Avenue', price: 180, rent: 14 },
   { name: 'Amber Boulevard', price: 200, rent: 16 },
 
-  { name: 'Free Parking', price: 0, rent: 0 },
 
   { name: 'Ruby Road', price: 220, rent: 18 },
-  { name: 'Fate Card', price: 0, rent: 0 },
+
   { name: 'Ruby Lane', price: 220, rent: 18 },
   { name: 'Ruby Court', price: 240, rent: 20 },
 
@@ -44,17 +36,13 @@ const properties = [
   { name: 'Water Works', price: 150, rent: 15 },
   { name: 'Onyx Plaza', price: 280, rent: 24 },
 
-  { name: 'Go To Jail', price: 0, rent: 0 },
-
   { name: 'Obsidian Way', price: 300, rent: 26 },
   { name: 'Obsidian Path', price: 300, rent: 26 },
-  { name: 'Mystic Chest', price: 0, rent: 0 },
   { name: 'Obsidian Court', price: 320, rent: 28 },
 
   { name: 'Void Station', price: 200, rent: 25 },
 
   { name: 'Crown Avenue', price: 350, rent: 35 },
-  { name: 'Luxury Tax', price: 0, rent: 0 },
   { name: 'Crown Plaza', price: 400, rent: 50 }
 ]
 
