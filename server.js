@@ -2,7 +2,7 @@ import express from 'express'
 import http from 'http'
 import { Server } from 'socket.io'
 import dotenv from 'dotenv'
-import mongoose from './db.js'
+import './db.js'
 import cors from 'cors'
 import gameRoutes from './routes/gameRoutes.js'
 import loginRoutes from './routes/loginRoutes.js'
@@ -15,13 +15,12 @@ app.use(express.json())
 
 app.use(
   cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   })
 )
-
-app.options('*', cors())
 
 app.use('/api/auth', loginRoutes)
 app.use('/api/games', gameRoutes)
@@ -30,9 +29,9 @@ const server = http.createServer(app)
 
 const io = new Server(server, {
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: true,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
   },
 })
 
@@ -49,5 +48,4 @@ io.on('connection', (socket) => {
 })
 
 const PORT = process.env.PORT || 5000
-
 server.listen(PORT)
