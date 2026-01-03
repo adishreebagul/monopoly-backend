@@ -46,10 +46,14 @@ router.post('/joinRandom', async (req, res) => {
         if (game.players.length >= MAX_PLAYERS) game.status = 'started';
         await game.save();
 
-        const populatedGame = await Game.findById(game._id).populate({
+        const populatedGame = await Game.findById(game._id)
+        .populate({
             path: 'players',
             populate: { path: 'user', select: 'name' }
-        });
+        })
+        .populate({
+            path: 'board.property'
+        })
 
         // Emit to all players in this game room
         io.to(game._id.toString()).emit('playerJoined', populatedGame);
@@ -116,16 +120,22 @@ router.post('/:gameId/buyProperty', async (req, res) => {
 })
 
 router.get('/:gameId', async (req, res) => {
-    try {
-        const game = await Game.findById(req.params.gameId).populate({
-            path: 'players',
-            populate: { path: 'user', select: 'name' }
-        });
-        if (!game) return res.status(404).json({ message: 'Game not found' });
-        res.json(game);
-    } catch (err) {
-        res.status(500).json({ message: 'Failed to fetch game', error: err.message });
-    }
-});
+  try {
+    const game = await Game.findById(req.params.gameId)
+      .populate({
+        path: 'players',
+        populate: { path: 'user', select: 'name' }
+      })
+      .populate({
+        path: 'board.property'
+      })
+
+    if (!game) return res.status(404).json({ message: 'Game not found' })
+    res.json(game)
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch game', error: err.message })
+  }
+})
+
 
 export default router
