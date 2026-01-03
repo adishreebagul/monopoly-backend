@@ -3,6 +3,7 @@ import Game from '../models/Game.js'
 import Property from '../models/Property.js'
 import Player from '../models/Player.js'
 import User from '../models/User.js'
+import BoardTile from '../models/BoardTile.js'
 
 const router = express.Router()
 const MAX_PLAYERS = 4
@@ -21,10 +22,10 @@ router.post('/joinRandom', async (req, res) => {
         });
 
         if (!game) {
-            const properties = await Property.find().sort({ _id: 1 });
+            const boardTiles = await BoardTile.find().sort({ index: 1 });
             game = await Game.create({
                 players: [],
-                board: boardTiles.map(p => ({ property: tile.property, owner: null })),
+                board: boardTiles.map(tile => ({ property: tile.property || null, owner: null })),
                 turnIndex: 0,
                 status: 'waiting'
             });
@@ -60,7 +61,8 @@ router.post('/joinRandom', async (req, res) => {
 
         res.json(populatedGame);
 
-    } catch (err) {
+    } 
+    catch (err) {
         res.status(500).json({ message: 'Failed to join game', error: err.message });
     }
 });
